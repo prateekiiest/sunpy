@@ -17,6 +17,7 @@ from sunpy.tests.helpers import assert_quantity_allclose
 def seconds_per_day():
     return 24 * 60 * 60.0 * u.s
 
+
 def test_single(seconds_per_day):
     rot = diff_rot(10 * seconds_per_day, 30 * u.deg)
     assert rot == 136.8216 * u.deg
@@ -98,11 +99,13 @@ def test_rot_hpc():
     isinstance(y, Angle)
     y.unit == u.arcsec
 
+
 def test_to_norm():
     array_simple = np.array([10., 20., 30., 100.])
-    assert_allclose(_to_norm(array_simple), np.array([0.1, 0.2, 0.3, 1.]))    
+    assert_allclose(_to_norm(array_simple), np.array([0.1, 0.2, 0.3, 1.]))
     array_simple_neg = np.array([-10., 0., 10., 90.])
     assert_allclose(_to_norm(array_simple_neg), np.array([0, 0.1, 0.2, 1.]))
+
 
 def test_un_norm():
     array_simple = np.array([10, 20, 30, 100.])
@@ -111,3 +114,10 @@ def test_un_norm():
     assert_allclose(_un_norm(np.array([0, 0.1, 0.2, 1.]), array_simple_neg), array_simple_neg)
 
 
+def test_warp_sun():
+    pass
+
+
+# Test a full disk map and a submap
+def test_diffrot_map():
+    pass
