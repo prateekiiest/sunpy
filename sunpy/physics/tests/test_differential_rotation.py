@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+import os
 import pytest
 
 import numpy as np
@@ -7,11 +8,30 @@ from astropy import units as u
 from astropy.coordinates import Longitude, Latitude, Angle
 from sunpy.physics.differential_rotation import diff_rot, _sun_pos, _calc_P_B0_SD, rot_hpc, _un_norm, _to_norm
 from sunpy.tests.helpers import assert_quantity_allclose
+import sunpy.data.test
+import sunpy.map
+
 #pylint: disable=C0103,R0904,W0201,W0212,W0232,E1103
 
 # Please note the numbers in these tests are not checked for physical
 # accuracy, only that they are the values the function was outputting upon
 # implementation.
+
+testpath = sunpy.data.test.rootdir
+
+
+@pytest.fixture
+def aia171_test_map():
+    return sunpy.map.Map(os.path.join(testpath, 'aia_171_level1.fits'))
+
+
+@pytest.fixture
+def aia171_test_map_with_mask(aia171_test_map):
+    shape = aia171_test_map.data.shape
+    mask = np.zeros_like(aia171_test_map.data, dtype=bool)
+    mask[0:shape[0]//2, 0:shape[1]//2] = True
+    return sunpy.map.Map(np.ma.array(aia171_test_map.data, mask=mask), aia171_test_map.meta)
+
 
 @pytest.fixture
 def seconds_per_day():
